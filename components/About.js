@@ -1,25 +1,24 @@
-import styles from '../styles/About.module.scss'
+import Button from '@mui/material/Button';
 import Link from 'next/link';
 
 function About(props) {
 
-  return <div className={styles.about}>
-      <h1>PDF Library</h1>
-      <p>by Desto</p>
-      <div className={styles.aboutDesc}>
-          <h2>Hi, PDF Library is a web app for storing your pdf files in cloud so
+  return <div>
+      <h1 className='font font-Regular font-medium text-center font-extrabold mt-14 text-7xl'>PDF Library</h1>
+      <div className='font-normal font-medium text-center md:text-3xl p-16 sm:text-base'>
+          <h2>PDF Library is a web app for storing your pdf files in cloud so
               you can access them on any device as long as you have internet connection.
               Currently app will only read text from your files so any pictures etc.
-              won't appear.
+              won&apos;t appear.
             </h2>
-            <h2>I made this mainly for myself because I was tired when I had to store
+            <h2 className='mt-14'>I made this mainly for myself because I was tired when I had to store
                 all my books on diferent devices. Also there is option to save progress when reading
-                so that you won't need to scroll through entire book again.
+                so that you won&apos;t need to scroll through entire book again.
             </h2>
-            <h2>If you like this app, you can check my other projects on my GitHub.</h2>
-            <div className={styles.buttons}>
-                <Link href='https://github.com/Desto89'><div className={styles.btn}><h1>Github</h1></div></Link>
-                <div onClick={()=>{props.changePage(null)}} className={styles.btn}><h1>Menu</h1></div>
+            <h2 className='mt-14'>If you like this app, you can check my other projects on my GitHub.</h2>
+            <div className='flex justify-center mt-14'>
+                <Link href='https://github.com/Desto89' passHref><Button style={{fontSize: '1.2rem', width: '150px', height: '60px', backgroundColor: 'black', margin: '10px'}} variant='contained'>Github</Button></Link>
+                <Button onClick={()=>{props.changePage(null)}}style={{fontSize: '1.2rem', width: '150px', height: '60px', backgroundColor: '#007FFF', margin: '10px'}} variant='contained'>Menu</Button>
             </div>
       </div>
   </div>;
