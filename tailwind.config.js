@@ -8,6 +8,9 @@ module.exports = {
     extend: {
       fontFamily: {
         Regular: ['Patrick Hand', 'cursive']
+      },
+      scale: {
+        '500': '5',
       }
     },
   },

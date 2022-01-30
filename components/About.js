@@ -4,7 +4,7 @@ import Link from 'next/link';
 function About(props) {
 
   return <div>
-      <h1 className='font font-Regular font-medium text-center font-extrabold mt-14 text-7xl'>PDF Library</h1>
+      <h1 className='font-normal font-medium text-center font-bold mt-14 text-7xl'>PDF Library</h1>
       <div className='font-normal font-medium text-center md:text-3xl p-16 sm:text-base'>
           <h2>PDF Library is a web app for storing your pdf files in cloud so
               you can access them on any device as long as you have internet connection.

@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { collection, query, where, getDocs } from "firebase/firestore";
+import { collection, query, getDocs, doc, updateDoc } from "firebase/firestore";
 import { db } from '../lib/firebase';
 import CircularProgress from '@mui/material/CircularProgress';
 import Accordion from '@mui/material/Accordion';
@@ -20,13 +20,15 @@ import SaveIcon from '@mui/icons-material/Save';
 function ViewFiles(props) {
 
   const [books, setBooks] = useState(null)
+  const [currentBookName, setCurrentBookName] = useState(null)
   const [currentBook, setCurrentBook] = useState(null)
   const [loading, setLoading] = useState(false)
-  const [darkMode, setDarkMode] = useState(false) 
+  const [darkMode, setDarkMode] = useState(false)
+  const [savedPage, setSavedPage] = useState(0)
 
   const actions = [
     { icon: <VisibilityIcon />, name: 'Dark Mode', click: function() {darkMode ? setDarkMode(false) : setDarkMode(true)}},
-    { icon: <SaveIcon />, name: 'Save', click: function() {props.changePage(null)}},
+    { icon: <SaveIcon />, name: 'Save', click: function() {alert('To save progress just click on text. App with scroll to current paragraph when you open this book next time.')}},
     { icon: <CloseIcon />, name: 'Exit', click: function() {props.changePage(null)}}
   ];
 
@@ -43,8 +45,16 @@ function ViewFiles(props) {
     getBooks()
   },[])
 
-  function openBook(name, page) {
+  useEffect(()=>{
+    if (currentBook) {
+      document.getElementById(savedPage).scrollIntoView()
+    }
+  },[currentBook])
+
+  function openBook(name,page) {
+    setSavedPage(page)
     setLoading(true)
+    setCurrentBookName(name)
     getDownloadURL(ref(storage, `${props.uid}/${name}`))
     .then((url) => {
       axios.post('https://pdflibserver.herokuapp.com/', {
@@ -59,6 +69,15 @@ function ViewFiles(props) {
       });
     }
   )}
+
+  async function saveProgress(page) {
+    const pageRef = doc(db, props.uid, currentBookName);
+    await updateDoc(pageRef, {
+      page: page
+    });
+    alert('Progress saved.')
+  }
+
   if (currentBook === null) {
     return <div>
       {books === null &&
@@ -100,14 +119,14 @@ function ViewFiles(props) {
   }
   else if (currentBook !== null) {
     const splittedBook = currentBook.data.split("\n\n")
-    return (<div className={darkMode ? 'bg-black absolute text-4xl p-10' : 'absolute text-4xl p-10'}>
-       <SpeedDial FabProps={{ size: "large", style: { backgroundColor: "blue" } }}
+    return (<div className={darkMode ? 'bg-black absolute' : 'absolute'}>       
+       <SpeedDial FabProps={{style: { backgroundColor: "blue" } }}
         ariaLabel="SpeedDial basic example"
-        sx={{ position: 'fixed', bottom: 25, left: 25 }}
+        sx={{ transform: {xs: 'scale(4)', md: 'scale(1.5)'}, position: 'fixed', bottom: {xs: 450, md: 100}, right: {xs: 150, md: 100 }}}
         icon={<SpeedDialIcon />}
       >
         {actions.map((action) => (
-          <SpeedDialAction FabProps={{ size: "large", style: { color: 'white', backgroundColor: "blue" } }}
+          <SpeedDialAction FabProps={{style: { color: 'white', backgroundColor: "blue" } }}
             key={action.name}
             icon={action.icon}
             tooltipTitle={action.name}
@@ -115,8 +134,8 @@ function ViewFiles(props) {
           />
         ))}
       </SpeedDial>
-      {splittedBook.map((line)=>{
-        return <div key={line}><h1 className={darkMode ? 'text-white' : 'text-black'}>{line}</h1></div>
+      {splittedBook.map((line, index)=>{
+        return <h1 id={index} onClick={()=>{saveProgress(index)}} key={index} className={darkMode ? 'md:p-6 md:w-8/12 p-12 w-5/12 md:m-auto text-8xl md:text-2xl text-white' : 'md:p-6 md:w-8/12 p-12 w-5/12 md:m-auto ml-16 text-8xl md:text-2xl text-black'}>{line}</h1>
       })}
     </div>)
   }
