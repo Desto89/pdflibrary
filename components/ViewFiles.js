@@ -135,7 +135,7 @@ function ViewFiles(props) {
         ))}
       </SpeedDial>
       {splittedBook.map((line, index)=>{
-        return <h1 id={index} onClick={()=>{saveProgress(index)}} key={index} className={darkMode ? 'md:p-6 md:w-8/12 p-12 w-5/12 md:m-auto text-8xl md:text-2xl text-white' : 'md:p-6 md:w-8/12 p-12 w-5/12 md:m-auto ml-16 text-8xl md:text-2xl text-black'}>{line}</h1>
+        return <h1 id={index} onClick={()=>{saveProgress(index)}} key={index} className={darkMode ? 'md:p-6 md:w-8/12 p-12 md:m-auto text-8xl md:text-2xl text-white' : 'md:p-6 md:w-8/12 p-12 md:m-auto ml-16 text-8xl md:text-2xl text-black'}>{line}</h1>
       })}
     </div>)
   }
