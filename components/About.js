@@ -13,8 +13,8 @@ function About(props) {
               Currently app will only read text from your files so any pictures etc.
               won&apos;t appear.
             </h2>
-            <h2 className='mt-14'>Most books will render just fine but if your text will go off-screen
-                use &quot;Up&quot; and &quot;Down&quot; buttons to scale it to your device. 
+            <h2 className='mt-14'>On desktop books will render just fine but on smaller devices you need to scale text
+                using &quot;Up&quot; and &quot;Down&quot; buttons to fit screen. 
             </h2>
             <h2 className='mt-14'>If you like this app, you can check my other projects on my GitHub.</h2>
             <div className='flex justify-center mt-14'>
