@@ -4,7 +4,7 @@ import Link from 'next/link';
 function About(props) {
 
   return <div>
-      <h1 className='font-normal font-medium text-center font-bold mt-14 text-7xl'>PDF Library</h1>
+      <h1 className='font-normal font-medium text-center font-bold mt-14 text-4xl'>PDF Library</h1>
       <div className='font-normal font-medium text-center md:text-3xl p-16 sm:text-base'>
           <h2>PDF Library is a web app for storing your pdf files in cloud so
               you can access them on any device as long as you have internet connection.
@@ -13,8 +13,8 @@ function About(props) {
               Currently app will only read text from your files so any pictures etc.
               won&apos;t appear.
             </h2>
-            <h2 className='mt-14'>I made this mainly for myself because I was tired when I had to store
-                all my books on diferent devices. 
+            <h2 className='mt-14'>Most books will render just fine but if your text will go off-screen
+                use "Up" and "Down" buttons to scale it to your device. 
             </h2>
             <h2 className='mt-14'>If you like this app, you can check my other projects on my GitHub.</h2>
             <div className='flex justify-center mt-14'>

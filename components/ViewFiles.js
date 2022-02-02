@@ -16,6 +16,9 @@ import SpeedDialAction from '@mui/material/SpeedDialAction';
 import CloseIcon from '@mui/icons-material/Close';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import SaveIcon from '@mui/icons-material/Save';
+import { makeStyles } from "@material-ui/styles";
+import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
+import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
 
 function ViewFiles(props) {
 
@@ -25,12 +28,39 @@ function ViewFiles(props) {
   const [loading, setLoading] = useState(false)
   const [darkMode, setDarkMode] = useState(false)
   const [savedPage, setSavedPage] = useState(0)
+  const [customScale, setCustomScale] = useState(11)
+
+  function changeScale(direction) {
+    if (direction === 'up') {
+      if (customScale === 6) {
+        setCustomScale(7)
+      } else if (customScale === 7) {
+        setCustomScale(11)
+      }
+    } else if (direction === 'down') {
+      if (customScale === 11) {
+        setCustomScale(7)
+      } else if (customScale === 7) {
+        setCustomScale(6)
+      }
+    }
+  }
 
   const actions = [
+    { icon: <ArrowDownwardIcon />, name: 'Scale Down', click: function() {changeScale('down')}},
+    { icon: <ArrowUpwardIcon />, name: 'Scale Up', click: function() {changeScale('up')}},
     { icon: <VisibilityIcon />, name: 'Dark Mode', click: function() {darkMode ? setDarkMode(false) : setDarkMode(true)}},
     { icon: <SaveIcon />, name: 'Save', click: function() {alert('To save progress just click on text. App with scroll to current paragraph when you open this book next time.')}},
     { icon: <CloseIcon />, name: 'Exit', click: function() {props.changePage(null)}}
   ];
+
+  const useStyles = makeStyles((theme) => ({
+    tooltip: {
+      fontSize: '3rem'
+    }
+  }));
+
+  const classes = useStyles();
 
   useEffect(()=>{
     async function getBooks() {
@@ -47,7 +77,10 @@ function ViewFiles(props) {
 
   useEffect(()=>{
     if (currentBook) {
-      document.getElementById(savedPage).scrollIntoView()
+      try {
+        document.getElementById(savedPage ? savedPage : 0).scrollIntoView()
+      } catch {}
+      
     }
   },[currentBook])
 
@@ -121,8 +154,8 @@ function ViewFiles(props) {
     const splittedBook = currentBook.data.split("\n\n")
     return (<div className={darkMode ? 'bg-black absolute' : 'absolute'}>       
        <SpeedDial FabProps={{style: { backgroundColor: "blue" } }}
-        ariaLabel="SpeedDial basic example"
-        sx={{ transform: {xs: 'scale(4)', md: 'scale(1.5)'}, position: 'fixed', bottom: {xs: 450, md: 100}, right: {xs: 150, md: 100 }}}
+        ariaLabel="SpeedDial"
+        sx={{ transform: {xs: 'scale(4)', md: 'scale(1.5)'}, position: 'fixed', bottom: {xs: 600, md: 150}, right: {xs: 150, md: 100 }}}
         icon={<SpeedDialIcon />}
       >
         {actions.map((action) => (
@@ -131,11 +164,12 @@ function ViewFiles(props) {
             icon={action.icon}
             tooltipTitle={action.name}
             onClick={action.click}
+            TooltipClasses={classes}
           />
         ))}
       </SpeedDial>
       {splittedBook.map((line, index)=>{
-        return <h1 id={index} onClick={()=>{saveProgress(index)}} key={index} className={darkMode ? 'md:p-6 md:w-8/12 p-12 md:m-auto text-8xl md:text-2xl text-white' : 'md:p-6 md:w-8/12 p-12 md:m-auto ml-16 text-8xl md:text-2xl text-black'}>{line}</h1>
+        return <h1 id={index} onClick={()=>{saveProgress(index)}} key={index} className={darkMode ? `md:p-6 md:w-8/12 p-12 md:m-auto text-8xl md:text-2xl w-${customScale}/12 text-white` : `md:p-6 md:w-8/12 p-12 md:m-auto w-${customScale}/12 ml-16 text-8xl md:text-2xl text-black`}>{line}</h1>
       })}
     </div>)
   }
