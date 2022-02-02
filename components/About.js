@@ -14,7 +14,7 @@ function About(props) {
               won&apos;t appear.
             </h2>
             <h2 className='mt-14'>Most books will render just fine but if your text will go off-screen
-                use "Up" and "Down" buttons to scale it to your device. 
+                use &quot;Up&quot; and &quot;Down&quot; buttons to scale it to your device. 
             </h2>
             <h2 className='mt-14'>If you like this app, you can check my other projects on my GitHub.</h2>
             <div className='flex justify-center mt-14'>
