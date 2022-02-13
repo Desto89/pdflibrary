@@ -144,7 +144,8 @@ function ViewFiles(props) {
   }
   else if (currentBook !== null) {
     const splittedBook = currentBook.data.split("\n\n")
-    return (<div className={darkMode ? 'bg-black absolute' : 'absolute'}>       
+    return (
+    <div className={darkMode ? 'bg-black absolute' : 'absolute'}>       
        <SpeedDial FabProps={{style: { backgroundColor: "blue" } }}
         ariaLabel="SpeedDial"
         sx={{ transform: {xs: 'scale(4)', md: 'scale(1.5)'}, position: 'fixed', bottom: {xs: 600, md: 150}, right: {xs: 150, md: 100 }}}
@@ -161,7 +162,7 @@ function ViewFiles(props) {
         ))}
       </SpeedDial>
       {splittedBook.map((line, index)=>{
-        return <h1 id={index} onClick={()=>{saveProgress(index)}} key={index} style={{width: `${customScale}0%`}} className={darkMode ? 'md:p-6 md:w-8/12 p-12 md:m-auto text-8xl md:text-2xl text-white' : `md:p-6 md:w-8/12 p-12 md:m-auto ml-16 text-8xl md:text-2xl text-black`}>{line}</h1>
+        return <h1 id={index} onClick={()=>{saveProgress(index)}} key={index} style={{width: `${customScale}0%`}} className={darkMode ? 'md:p-6 md:w-8/12 p-12 md:m-auto ml-16 text-8xl md:text-2xl text-white' : 'md:p-6 md:w-8/12 p-12 md:m-auto ml-16 text-8xl md:text-2xl text-black'}>{line}</h1>
       })}
     </div>)
   }
