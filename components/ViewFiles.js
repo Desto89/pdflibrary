@@ -31,9 +31,9 @@ function ViewFiles(props) {
   const [customScale, setCustomScale] = useState(6)
 
   function changeScale(direction) {
-    if (direction === 'up' && customScale < 10) {
+    if (direction === 'up' && customScale < 9) {
       setCustomScale( customScale += 1)
-    } else if (direction === 'down' && customScale > 1) {
+    } else if (direction === 'down' && customScale > 4) {
         setCustomScale(customScale -= 1)
     }
   }
@@ -46,10 +46,11 @@ function ViewFiles(props) {
     { icon: <CloseIcon />, name: 'Exit', click: function() {props.changePage(null)}}
   ];
 
+
   const useStyles = makeStyles((theme) => ({
     tooltip: {
-      fontSize: '3rem'
-    }
+      
+      },
   }));
 
   const classes = useStyles();
