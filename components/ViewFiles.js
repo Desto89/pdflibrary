@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { collection, query, getDocs, doc, updateDoc } from "firebase/firestore";
+import { collection, query, getDocs, doc, updateDoc, deleteDoc } from "firebase/firestore";
 import { db } from '../lib/firebase';
 import CircularProgress from '@mui/material/CircularProgress';
 import Accordion from '@mui/material/Accordion';
@@ -7,7 +7,7 @@ import AccordionSummary from '@mui/material/AccordionSummary';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import Button from '@mui/material/Button';
-import { ref, getDownloadURL } from "firebase/storage";
+import { ref, getDownloadURL, deleteObject } from "firebase/storage";
 import { storage } from '../lib/firebase';
 import axios from 'axios';
 import SpeedDial from '@mui/material/SpeedDial';
@@ -16,7 +16,6 @@ import SpeedDialAction from '@mui/material/SpeedDialAction';
 import CloseIcon from '@mui/icons-material/Close';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import SaveIcon from '@mui/icons-material/Save';
-import { makeStyles } from "@material-ui/styles";
 import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
 import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
 
@@ -47,14 +46,6 @@ function ViewFiles(props) {
   ];
 
 
-  const useStyles = makeStyles((theme) => ({
-    tooltip: {
-      
-      },
-  }));
-
-  const classes = useStyles();
-
   useEffect(()=>{
     async function getBooks() {
     const dummyArr = []
@@ -76,6 +67,20 @@ function ViewFiles(props) {
       
     }
   },[currentBook])
+
+  function deleteBook(book, uid, index) {
+    setLoading(true)
+    const deleteRef = ref(storage, `${uid}/${book}`)
+    deleteObject(deleteRef).then(() => {
+      deleteDoc(doc(db, uid, book));
+      const dummyArr = books
+      dummyArr.splice(index, 1)
+      setBooks(dummyArr)
+      setLoading(false)
+    }).catch((error) => {
+      console.log(error)
+    });
+  }
 
   function openBook(name,page) {
     setSavedPage(page)
@@ -111,7 +116,7 @@ function ViewFiles(props) {
       }
       {books !== null &&
         <div>
-          {books.map((book)=>{
+          {books.map((book, index)=>{
             return (
               <div key={book.name} className='m-auto sm:w-2/5 w-full'>
                 <Accordion square={true}>
@@ -123,8 +128,8 @@ function ViewFiles(props) {
                   <h1>{book.name}</h1>
                   </AccordionSummary>
                   <AccordionDetails className='flex'>
-                    <Button onClick={()=>{openBook(book.name, book.page)}}style={{width:'5rem'}} variant='outlined' color='primary'>Open</Button>
-                    <Button style={{width:'5rem', marginLeft:'10px'}} variant='outlined' color='error'>Delete</Button>
+                    <Button onClick={()=>{openBook(book.name, book.page)}} style={{width:'5rem'}} variant='outlined' color='primary'>Open</Button>
+                    <Button onClick={()=>{deleteBook(book.name, props.uid, index)}} style={{width:'5rem', marginLeft:'10px'}} variant='outlined' color='error'>Delete</Button>
                   </AccordionDetails>
                 </Accordion>
               </div>
@@ -158,7 +163,6 @@ function ViewFiles(props) {
             icon={action.icon}
             tooltipTitle={action.name}
             onClick={action.click}
-            TooltipClasses={classes}
           />
         ))}
       </SpeedDial>
