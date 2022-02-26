@@ -10,12 +10,4 @@ body {
     overflow-x: hidden;
 }
 
-.MuiTooltip-tooltip {
-    font-size: 30px;
-}
 
-@media only screen and (max-width: 600px) {
-    .MuiTooltip-tooltip {
-      font-size: 60px;
-    }
-  }

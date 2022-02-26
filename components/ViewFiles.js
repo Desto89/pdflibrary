@@ -18,6 +18,8 @@ import VisibilityIcon from '@mui/icons-material/Visibility';
 import SaveIcon from '@mui/icons-material/Save';
 import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
 import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
+import { makeStyles } from "@material-ui/styles";
+
 
 function ViewFiles(props) {
 
@@ -36,6 +38,15 @@ function ViewFiles(props) {
         setCustomScale(customScale -= 1)
     }
   }
+
+  const useStyles = makeStyles((theme) => ({
+    tooltip: {
+      ["@media (max-width:700px)"]: { fontSize: '80px' },
+      ["@media (min-width:700px)"]: { fontSize: '30px' }
+    }
+  }));
+  
+  const classes = useStyles();
 
   const actions = [
     { icon: <ArrowDownwardIcon />, name: 'Scale Down', click: function() {changeScale('down')}},
@@ -163,6 +174,7 @@ function ViewFiles(props) {
             icon={action.icon}
             tooltipTitle={action.name}
             onClick={action.click}
+            TooltipClasses={classes}
           />
         ))}
       </SpeedDial>
