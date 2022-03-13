@@ -29,10 +29,10 @@ function ViewFiles(props) {
   const [loading, setLoading] = useState(false)
   const [darkMode, setDarkMode] = useState(false)
   const [savedPage, setSavedPage] = useState(0)
-  const [customScale, setCustomScale] = useState(6)
+  const [customScale, setCustomScale] = useState(8)
 
   function changeScale(direction) {
-    if (direction === 'up' && customScale < 9) {
+    if (direction === 'up' && customScale < 10) {
       setCustomScale( customScale += 1)
     } else if (direction === 'down' && customScale > 4) {
         setCustomScale(customScale -= 1)
@@ -77,7 +77,7 @@ function ViewFiles(props) {
       } catch {}
       
     }
-  },[currentBook])
+  },[currentBook, customScale])
 
   function deleteBook(book, uid, index) {
     setLoading(true)
@@ -179,7 +179,7 @@ function ViewFiles(props) {
         ))}
       </SpeedDial>
       {splittedBook.map((line, index)=>{
-        return <h1 id={index} onClick={()=>{saveProgress(index)}} key={index} style={{width: `${customScale}0%`}} className={darkMode ? 'md:p-6 md:w-8/12 p-12 md:m-auto ml-16 text-8xl md:text-2xl text-white' : 'md:p-6 md:w-8/12 p-12 md:m-auto ml-16 text-8xl md:text-2xl text-black'}>{line}</h1>
+        return <h1 id={index} onClick={()=>{saveProgress(index)}} key={index} style={{width: `${customScale}0%`}} className={darkMode ? 'p-6 md:m-auto text-8xl md:text-2xl text-white' : 'p-6 md:m-auto text-8xl md:text-2xl text-black'}>{line}</h1>
       })}
     </div>)
   }
